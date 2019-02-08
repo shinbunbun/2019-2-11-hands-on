@@ -1,35 +1,62 @@
-'use strict';
-
-const express = require('express');
-const line = require('@line/bot-sdk');
-const PORT = process.env.PORT || 3000;
-
-const config = {
-    channelSecret: '',
-    channelAccessToken: ''
+// モジュールのインポート
+const server = require("express")();
+const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+// パラメータ設定
+const line_config = {
+    channelAccessToken: '', //アクセストークンをセット
+    channelSecret: '' //チャンネルシークレットをセット
 };
 
-const app = express();
+// Webサーバー設定
+server.listen(process.env.PORT || 3000);
 
-app.post('/webhook', line.middleware(config), (req, res) => {
-    console.log(req.body.events);
-    Promise
-        .all(req.body.events.map(handleEvent))
-        .then((result) => res.json(result));
+// APIコールのためのクライアントインスタンスを作成
+const bot = new line.Client(line_config);
+
+// ルーター設定
+server.post('/webhook', line.middleware(line_config), (req, res, next) => {
+    // 先行してLINE側にステータスコード200でレスポンスする。
+    res.sendStatus(200);
+    // イベントオブジェクトを順次処理。
+    req.body.events.map((event) => {
+        //メッセージタイプごとに関数を分ける
+        switch (event.type) {
+            case "message":
+                //messageイベントの場合
+                message(event);
+                break;
+            /*case "postback":
+                //postbackイベントの場合
+                postback(event);
+                break;
+            case "join":
+                //joinイベントの場合
+                join(event);
+                break;
+            case "leave":
+                //leaveイベントの場合
+                leave(event);
+                break;*/
+        }
+    });
 });
 
-const client = new line.Client(config);
-
-function handleEvent(event) {
-    if (event.type !== 'message' || event.message.type !== 'text') {
-        return Promise.resolve(null);
+const message = (e) => {
+    //テキストではないメッセージ（画像や動画など）が送られてきた場合はコンソールに「テキストではないメッセージが送られてきました」と出力する
+    if (e.message.type != "text") {
+        console.log("テキストではないメッセージが送られてきました");
+        return;
     }
 
-    return client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: event.message.text //実際に返信の言葉を入れる箇所
-    });
-}
+    // ユーザーから送られてきたメッセージ
+    const userMessage = e.message.text;
 
-app.listen(PORT);
-console.log(`Server running at ${PORT}`);
+    //ユーザーから送られてきたメッセージをコンソールに出力する
+    console.log(`メッセージ：${userMessage}`);
+
+    //ユーザーにメッセージを返信する
+    bot.replyMessage(e.replyToken, {
+        type: "text",
+        text: userMessage
+    });
+};
