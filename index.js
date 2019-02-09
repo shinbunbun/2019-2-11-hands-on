@@ -20,7 +20,7 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
     // イベントオブジェクトを順次処理。
     req.body.events.map((event) => {
-        //メッセージタイプごとに関数を分ける
+        //イベントタイプごとに関数を分ける
         switch (event.type) {
             case "message":
                 //messageイベントの場合
