@@ -8,8 +8,9 @@ const line_config = {
 };
 
 // Webサーバー設定
-server.listen(process.env.PORT || 3000);
-
+const PORT = process.env.PORT || 3000;
+server.listen(PORT);
+console.log(`Server running at ${PORT}`);
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
@@ -51,12 +52,26 @@ const message = (e) => {
     // ユーザーから送られてきたメッセージ
     const userMessage = e.message.text;
 
+    //ユーザーに返信するメッセージを作成
+    let message;
+    message = {
+        type: "text",
+        text: userMessage
+    };
+
+    //「こんにちは」というメッセージが送られてきたら「Hello World」と返信するメッセージを作成
+    /*if (userMessage == "こんにちは") {
+        message = {
+            type: "text",
+            text: "Hello World"
+        };
+    }*/
+
     //ユーザーから送られてきたメッセージをコンソールに出力する
     console.log(`メッセージ：${userMessage}`);
 
     //ユーザーにメッセージを返信する
     bot.replyMessage(e.replyToken, {
-        type: "text",
-        text: userMessage
+        message
     });
 };
