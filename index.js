@@ -1,6 +1,8 @@
+'use strict';
+
 // モジュールのインポート
-const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+const express = require('express');
 // パラメータ設定
 const line_config = {
     channelAccessToken: '', //AccessTokenをセット
@@ -9,14 +11,15 @@ const line_config = {
 
 // Webサーバー設定
 const PORT = process.env.PORT || 3000;
-server.listen(PORT);
+const app = express();
+
 console.log(`Server running at ${PORT}`);
 
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
 // ルーター設定
-server.post('/webhook', line.middleware(line_config), (req, res, next) => {
+app.post('/webhook', line.middleware(line_config), (req, res, next) => {
     // 先行してLINE側にステータスコード200でレスポンスする。
     res.sendStatus(200);
     // イベントオブジェクトを順次処理。
@@ -85,3 +88,6 @@ const messageFunc = (e) => {
     //送信するメッセージを29行目に返す
     return message;
 };
+
+//サーバー起動
+app.listen(port, () => console.log(`listening on ${port}`));
