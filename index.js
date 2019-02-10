@@ -43,7 +43,9 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
         }
 
         //ユーザーにメッセージを返信する
-        bot.replyMessage(event.replyToken, message);
+        if (message != undefined) {
+            bot.replyMessage(event.replyToken, message);
+        }
     });
 });
 
@@ -81,7 +83,5 @@ const messageFunc = (e) => {
     console.log(`メッセージ：${userMessage}`);
 
     //送信するメッセージを29行目に返す
-    if (message != undefined) {
-        return message;
-    }
+    return message;
 };
