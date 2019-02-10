@@ -11,6 +11,7 @@ const line_config = {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT);
 console.log(`Server running at ${PORT}`);
+
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
@@ -20,29 +21,33 @@ server.post('/webhook', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
     // イベントオブジェクトを順次処理。
     req.body.events.map((event) => {
+        let message;
         //イベントタイプごとに関数を分ける
         switch (event.type) {
             case "message":
                 //messageイベントの場合
-                message(event);
+                message = messageFunc(event);
                 break;
             /*case "postback":
                 //postbackイベントの場合
-                postback(event);
+                message = postbackFunc(event);
                 break;
             case "join":
                 //joinイベントの場合
-                join(event);
+                message = joinFunc(event);
                 break;
             case "leave":
                 //leaveイベントの場合
-                leave(event);
+                message = leaveFunc(event);
                 break;*/
         }
+
+        //ユーザーにメッセージを返信する
+        bot.replyMessage(event.replyToken, message);
     });
 });
 
-const message = (e) => {
+const messageFunc = (e) => {
     //テキストではないメッセージ（画像や動画など）が送られてきた場合はコンソールに「テキストではないメッセージが送られてきました」と出力する
     if (e.message.type != "text") {
         console.log("テキストではないメッセージが送られてきました");
@@ -75,8 +80,8 @@ const message = (e) => {
     //ユーザーから送られてきたメッセージをコンソールに出力する
     console.log(`メッセージ：${userMessage}`);
 
-    //ユーザーにメッセージを返信する
+    //送信するメッセージを29行目に返す
     if (message != undefined) {
-        bot.replyMessage(e.replyToken, message);
+        return message;
     }
 };
