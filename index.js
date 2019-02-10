@@ -85,7 +85,7 @@ const messageFunc = (e) => {
     //ユーザーから送られてきたメッセージをコンソールに出力する
     console.log(`メッセージ：${userMessage}`);
 
-    //送信するメッセージを29行目に返す
+    //送信するメッセージを32行目に返す
     return message;
 };
 
