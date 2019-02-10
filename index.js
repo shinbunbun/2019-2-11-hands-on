@@ -72,8 +72,6 @@ const message = (e) => {
 
     //ユーザーにメッセージを返信する
     if (message != undefined) {
-        bot.replyMessage(e.replyToken, {
-            message
-        });
+        bot.replyMessage(e.replyToken, message);
     }
 };
