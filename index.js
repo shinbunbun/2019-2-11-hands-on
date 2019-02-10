@@ -59,13 +59,20 @@ const message = (e) => {
         text: userMessage
     };
 
-    //「こんにちは」というメッセージが送られてきたら「Hello World」と返信するメッセージを作成
+    //「こんにちは」というメッセージが送られてきたら「Hello World」と返信して、「おはよう」と送られてきおたら「Good Morning!!」と返信するメッセージを作成
     /*if (userMessage == "こんにちは") {
         message = {
             type: "text",
             text: "Hello World"
         };
+    } else if (userMessage == "おはよう") {
+        message = {
+            type: "text",
+            text: "Good Morning!!"
+        };
     }*/
+
+
 
     //ユーザーから送られてきたメッセージをコンソールに出力する
     console.log(`メッセージ：${userMessage}`);
