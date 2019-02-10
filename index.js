@@ -72,8 +72,6 @@ const message = (e) => {
         };
     }*/
 
-
-
     //ユーザーから送られてきたメッセージをコンソールに出力する
     console.log(`メッセージ：${userMessage}`);
 
