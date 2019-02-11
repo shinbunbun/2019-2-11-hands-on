@@ -90,4 +90,4 @@ const messageFunc = (e) => {
 };
 
 //サーバー起動
-app.listen(port, () => console.log(`listening on ${port}`));
+app.listen(PORT, () => console.log(`listening on ${PORT}`));
