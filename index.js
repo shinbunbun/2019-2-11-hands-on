@@ -13,8 +13,6 @@ const line_config = {
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-console.log(`Server running at ${PORT}`);
-
 // APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
@@ -90,4 +88,4 @@ const messageFunc = (e) => {
 };
 
 //サーバー起動
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+app.listen(PORT, () => console.log(`Server running at ${PORT}`));
