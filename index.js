@@ -1,7 +1,7 @@
 'use strict';
 
 // モジュールのインポート
-const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+const line = require('@line/bot-sdk'); // Messaging APIのSDKをインポート
 const express = require('express');
 // パラメータ設定
 const line_config = {
@@ -25,22 +25,22 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
         let message;
         //イベントタイプごとに関数を分ける
         switch (event.type) {
-            case "message":
+            case 'message':
                 //messageイベントの場合
                 message = messageFunc(event);
                 break;
-            /*case "postback":
-                //postbackイベントの場合
-                message = postbackFunc(event);
-                break;
-            case "join":
-                //joinイベントの場合
-                message = joinFunc(event);
-                break;
-            case "leave":
-                //leaveイベントの場合
-                message = leaveFunc(event);
-                break;*/
+                /*case "postback":
+                    //postbackイベントの場合
+                    message = postbackFunc(event);
+                    break;
+                case "join":
+                    //joinイベントの場合
+                    message = joinFunc(event);
+                    break;
+                case "leave":
+                    //leaveイベントの場合
+                    message = leaveFunc(event);
+                    break;*/
         }
 
         //ユーザーにメッセージを返信する
@@ -52,8 +52,8 @@ app.post('/webhook', line.middleware(line_config), (req, res, next) => {
 
 const messageFunc = (e) => {
     //テキストではないメッセージ（画像や動画など）が送られてきた場合はコンソールに「テキストではないメッセージが送られてきました」と出力する
-    if (e.message.type != "text") {
-        console.log("テキストではないメッセージが送られてきました");
+    if (e.message.type != 'text') {
+        console.log('テキストではないメッセージが送られてきました');
         return;
     }
 
@@ -63,7 +63,7 @@ const messageFunc = (e) => {
     //ユーザーに返信するメッセージを作成
     let message;
     message = {
-        type: "text",
+        type: 'text',
         text: userMessage
     };
 
